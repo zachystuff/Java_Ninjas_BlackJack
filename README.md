@@ -1,9 +1,6 @@
 # SDE_Mini_Project
 SDE Mini Project Alan, Subash, Zach.
 
-# SDE_Mini_Project
-SDE Mini Project Alan, Subash, Zach.
-
 # Black Jack
 practice project based on blackjack
 
