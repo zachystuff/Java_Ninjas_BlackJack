@@ -1,20 +1,20 @@
 package com.javaninjas.blackjack.service;
 
 public enum Cards {
-    SPADE_ACE(11),
-    SPADE_2(2),
-    SPADE_3(3),
-    SPADE_4(4),
-    SPADE_5(5),
-    SPADE_6(6),
-    SPADE_7(7),
-    SPADE_8(9),
-    SPADE_9(9),
-    SPADE_10(10),
-    SPADE_JACK(10),
-    SPADE_QUEEN(10),
-    SPADE_KING(10),
-    DIAMONDS_ACE(11),
+    SPADES_ACE(0),
+    SPADES_2(2),
+    SPADES_3(3),
+    SPADES_4(4),
+    SPADES_5(5),
+    SPADES_6(6),
+    SPADES_7(7),
+    SPADES_8(9),
+    SPADES_9(9),
+    SPADES_10(10),
+    SPADES_JACK(10),
+    SPADES_QUEEN(10),
+    SPADES_KING(10),
+    DIAMONDS_ACE(0),
     DIAMONDS_2(2),
     DIAMONDS_3(3),
     DIAMONDS_4(4),
@@ -27,7 +27,7 @@ public enum Cards {
     DIAMONDS_JACK(10),
     DIAMONDS_QUEEN(10),
     DIAMONDS_KING(10),
-    HEART_ACE(11),
+    HEART_ACE(0),
     HEART_2(2),
     HEART_3(3),
     HEART_4(4),
@@ -40,7 +40,7 @@ public enum Cards {
     HEART_JACK(10),
     HEART_QUEEN(10),
     HEART_KING(10),
-    CLUBS_ACE(11),
+    CLUBS_ACE(0),
     CLUBS_1(1),
     CLUBS_2(2),
     CLUBS_3(3),
@@ -61,4 +61,7 @@ public enum Cards {
         this.value = value;
     };
 
+    public int getValue() {
+        return value;
+    }
 }
