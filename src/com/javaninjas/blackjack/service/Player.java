@@ -1,4 +1,4 @@
 package com.javaninjas.blackjack.service;
 
-class Player {
+public class Player {
 }
