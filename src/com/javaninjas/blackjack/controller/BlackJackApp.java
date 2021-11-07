@@ -1,14 +1,7 @@
 package com.javaninjas.blackjack.controller;
 
 import com.apps.util.Prompter;
-import com.javaninjas.blackjack.service.Deck;
-import com.javaninjas.blackjack.service.Player;
-import com.javaninjas.blackjack.service.PlayerFactory;
-import com.javaninjas.blackjack.service.Table;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Scanner;
 
 public class BlackJackApp {
