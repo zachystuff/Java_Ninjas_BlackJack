@@ -1,12 +1,11 @@
 package com.javaninjas.blackjack.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Dealer extends Player {
     //Fields and Attributes
     public static List<Player> playerList = new ArrayList<>();
-    //TODO: add deck
+    private LinkedList<Cards> deck;
     //Constructors
     public Dealer() {
         super("Dealer");
@@ -30,6 +29,16 @@ public class Dealer extends Player {
         }
     }
 
+    private void shuffle() {
+        Collections.shuffle(deck);
+    }
+
+    private void loadCards() {
+        //enum.value() returns enum constant as arrays
+        Collection<Cards> cards = Arrays.asList(Cards.values());
+        this.deck = new LinkedList<>(cards);
+    }
+
     public void dealerTurn() {
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\nAll players have Busted\n");
@@ -48,12 +57,10 @@ public class Dealer extends Player {
         setScore(scoreHand());
     }
 
-    //TODO: load card logic
     public Cards dealCard() {
         return deck.pop();
     }
 
-    //TODO: add shuffle
     public static List<Player> getPlayerList() {
         return playerList;
     }

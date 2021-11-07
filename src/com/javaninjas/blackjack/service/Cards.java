@@ -41,7 +41,6 @@ public enum Cards {
     HEART_QUEEN(10),
     HEART_KING(10),
     CLUBS_ACE(0),
-    CLUBS_1(1),
     CLUBS_2(2),
     CLUBS_3(3),
     CLUBS_4(4),
