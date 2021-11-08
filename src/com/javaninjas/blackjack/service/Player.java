@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    //fields and attributes
+    /**
+     *
+     */
     private String name;
     private double playerBalance;
     private int score = 0;
@@ -17,7 +19,6 @@ public class Player {
     }
 
     //Business Method
-
     public int scoreHand() {
         // initialize aces to zero so we can do special scoring on aces
         int aces = 0;
