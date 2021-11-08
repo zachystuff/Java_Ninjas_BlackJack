@@ -1,5 +1,6 @@
 package com.javaninjas.blackjack.controller;
 
+import com.apps.util.Console;
 import com.apps.util.Prompter;
 import com.javaninjas.blackjack.service.Dealer;
 import com.javaninjas.blackjack.service.Introduction;
@@ -36,8 +37,6 @@ public class BlackJackApp {
      * another round, the game will reset Player and Dealer before the start of the next round. If client chooses not
      * to play another round, the application will exit.
      *
-     * @throws InterruptedException
-     * @throws IOException
      * @see Introduction#introduction() introduction
      * @see #welcome() welcome
      * @see #getNumberOfPlayers() getNumberOfPlayers
@@ -49,11 +48,13 @@ public class BlackJackApp {
      * @see #playAgain() playAgain
      * @see #gameOver() gameOver
      */
-    public void execute() throws InterruptedException, IOException {
+    public void execute() throws InterruptedException {
         getIntro().introduction();
+        Console.clear();
         welcome();
         getNumberOfPlayers();
         getPlayerNames();
+        Console.clear();
         while (!isGameOver()) {
             getDealer().initialDeal();
             playerTurn();
@@ -67,10 +68,8 @@ public class BlackJackApp {
 
     /**
      * Retrieves an ascii art file and reads it into Stdout.
-     *
-     * @throws IOException
      */
-    private void welcome() throws IOException {
+    private void welcome() {
         System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "banner1.txt")).forEach(System.out::println);
@@ -89,6 +88,9 @@ public class BlackJackApp {
         setNumPlayers(Integer.parseInt(number));
     }
 
+    /**
+     * Uses Prompter to prompt the client for the player names.
+     */
     private void getPlayerNames() {
         int count = 1;
         while (count <= getNumPlayers()) {
@@ -101,7 +103,7 @@ public class BlackJackApp {
 
     private void playerTurn() throws InterruptedException {
         for (Player player : Dealer.getPlayerList()) {
-            System.out.println(getDealer().getName() + " is showing " + getDealer().showTopCard() + "\n");
+            System.out.println(getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
             if (player.scoreHand() == 21) {
                 System.out.println(player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.getHand());
@@ -110,7 +112,7 @@ public class BlackJackApp {
             } else {
                 boolean flag = true;
                 while (flag) {
-                    System.out.println(player.getName() + " has " + player.getHand());
+                    System.out.println(player.getName() + " has \n" + player.printHand());
                     System.out.println(player.getName() + "'s current score is " + player.scoreHand());
                     String response = prompter.prompt("\nWould you like to [h]it or [s]tand?\n", "s|S|h|H", "\nInvalid " +
                             "option! Please press either (h) or (s)\n");
