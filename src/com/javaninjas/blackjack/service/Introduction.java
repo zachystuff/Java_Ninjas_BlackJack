@@ -31,36 +31,43 @@ public class Introduction {
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "3":
                     System.out.println("PEW PEW...EJECT! EJECT!...CRASH! THE END");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "4":
                     System.out.println("ISN'T THIS JUST HIDE AND SEEK WITH GUNS?");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "5":
                     System.out.println("SYSTEM ERROR: TOO MUCH SAND WHERE IT DOESN'T BELONG!");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "6":
                     System.out.println("THIS GAME HAS BEEN REPLACED WITH DRONES");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "7":
                     System.out.println("THIS GAME HAS BEEN DELETED DUE TO GRAPHIC CONTENT");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "8":
                     System.out.println("COUGH...COUGH...THE END");
                     TimeUnit.SECONDS.sleep(2);
                     System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
                     TimeUnit.SECONDS.sleep(3);
+                    break;
                 case "9":
                     System.out.println("EVERYONE IS DEAD...ARE YOU HAPPY NOW?");
                     TimeUnit.SECONDS.sleep(2);
