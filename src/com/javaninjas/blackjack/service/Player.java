@@ -3,10 +3,14 @@ package com.javaninjas.blackjack.service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Player class for BlackJack game. This class provides scoreHand() method, returns boolean hasBlackJack or isBusted
+ *
+ * @author Subash KC
+ * @version 1.0
+ */
+
 public class Player {
-    /**
-     *
-     */
     private String name;
     private double playerBalance;
     private int score = 0;
