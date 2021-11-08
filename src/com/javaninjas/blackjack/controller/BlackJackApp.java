@@ -13,6 +13,13 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * Controller Class for BlackJack game. Provides complete game flow through {@link #execute() execute} method. Provides
+ * user input through a Prompter class written by Jay Rostosky.
+ *
+ * @author Alan Pottinger
+ * @version 1.0
+ */
 public class BlackJackApp {
     private int numPlayers;
     private boolean gameOver = false;
@@ -23,6 +30,25 @@ public class BlackJackApp {
     public BlackJackApp() {
     }
 
+    /**
+     * Calls multiple methods in this class as well as other classes to guide client through a complete game of
+     * BlackJack. After each round, client is prompted to {@link #playAgain() play again}. If client selects to play
+     * another round, the game will reset Player and Dealer before the start of the next round. If client chooses not
+     * to play another round, the application will exit.
+     *
+     * @throws InterruptedException
+     * @throws IOException
+     * @see Introduction#introduction() introduction
+     * @see #welcome() welcome
+     * @see #getNumberOfPlayers() getNumberOfPlayers
+     * @see #getPlayerNames() getPlayerNames
+     * @see Dealer#initialDeal() initialDeal
+     * @see #playerTurn() playerTurn
+     * @see Dealer#dealerTurn() dealerTurn
+     * @see #finalResult() finalResult
+     * @see #playAgain() playAgain
+     * @see #gameOver() gameOver
+     */
     public void execute() throws InterruptedException, IOException {
         getIntro().introduction();
         welcome();
@@ -39,60 +65,38 @@ public class BlackJackApp {
 
     }
 
-    private void gameOver() {
-        System.out.println();
+    /**
+     * Retrieves an ascii art file and reads it into Stdout.
+     *
+     * @throws IOException
+     */
+    private void welcome() throws IOException {
+        System.out.println("\n\n");
         try {
-            Files.lines(Path.of("resources", "gameover.txt")).forEach(System.out::println);
+            Files.lines(Path.of("resources", "banner1.txt")).forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("\n\n");
     }
 
-    private void playAgain() {
-        String replay = prompter.prompt("\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
-                "Invalid response");
-        if ("y".equalsIgnoreCase(replay)) {
-            getDealer().getHand().clear();
-            getDealer().getDeck().clear();
-            getDealer().setBusted(false);
-            getDealer().setBlackJack(false);
-            getDealer().setScore(0);
-            Dealer.getPlayerList().forEach(player -> player.getHand().clear());
-            Dealer.getPlayerList().forEach(player -> player.setBlackJack(false));
-            Dealer.getPlayerList().forEach(player -> player.setBusted(false));
-            Dealer.getPlayerList().forEach(player -> player.setScore(0));
-        } else {
-            setGameOver(true);
+    /**
+     * Uses Prompter to prompt the client for the number of players. Range [1-6].
+     */
+    private void getNumberOfPlayers() {
+        String number = prompter.prompt("Please select number of players [1-6]\n", "[1-6]", "\n" +
+                "Invalid number of players! Please select between 1 and 6 players");
+        setNumPlayers(Integer.parseInt(number));
+    }
+
+    private void getPlayerNames() {
+        int count = 1;
+        while (count <= getNumPlayers()) {
+            String name = prompter.prompt("Player " + (count) + ": Please enter your name\n");
+            Dealer.playerList.add(new Player(name));
+            count++;
         }
     }
-
-    private void finalResult() {
-        if (getDealer().isBusted()) {
-            Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
-                    forEach(player -> System.out.println(player.getName() + " WINS!!!"));
-        } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            System.out.println("\nDealer Wins!!!\n");
-        } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
-            Dealer.getPlayerList().stream().filter(Player::HasBlackJack)
-                    .forEach(player -> System.out.println(player.getName() + "Pushes"));
-        } else {
-            Collection<Player> winners = Dealer.getPlayerList().stream()
-                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
-                    .collect(Collectors.toList());
-            Collection<Player> pushers = Dealer.getPlayerList().stream()
-                    .filter(player -> player.getScore() == getDealer().getScore())
-                    .collect(Collectors.toList());
-            if (pushers.size() == 0 && winners.size() == 0) {
-                System.out.println("\nDealer Wins!!!\n");
-            } else {
-                winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
-                pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
-            }
-        }
-    }
-
-
-
 
 
     private void playerTurn() throws InterruptedException {
@@ -128,31 +132,56 @@ public class BlackJackApp {
         }
     }
 
+    private void finalResult() {
+        if (getDealer().isBusted()) {
+            Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
+                    forEach(player -> System.out.println(player.getName() + " WINS!!!"));
+        } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
+            System.out.println("\nDealer Wins!!!\n");
+        } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
+            Dealer.getPlayerList().stream().filter(Player::HasBlackJack)
+                    .forEach(player -> System.out.println(player.getName() + "Pushes"));
+        } else {
+            Collection<Player> winners = Dealer.getPlayerList().stream()
+                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
+                    .collect(Collectors.toList());
+            Collection<Player> pushers = Dealer.getPlayerList().stream()
+                    .filter(player -> player.getScore() == getDealer().getScore())
+                    .collect(Collectors.toList());
+            if (pushers.size() == 0 && winners.size() == 0) {
+                System.out.println("\nDealer Wins!!!\n");
+            } else {
+                winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
+                pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
+            }
+        }
+    }
 
-    private void welcome() throws IOException {
-        // TODO: use ascii art for a welcome banner
-        System.out.println("\n\n");
+
+    private void playAgain() {
+        String replay = prompter.prompt("\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
+                "Invalid response");
+        if ("y".equalsIgnoreCase(replay)) {
+            getDealer().getHand().clear();
+            getDealer().getDeck().clear();
+            getDealer().setBusted(false);
+            getDealer().setBlackJack(false);
+            getDealer().setScore(0);
+            Dealer.getPlayerList().forEach(player -> player.getHand().clear());
+            Dealer.getPlayerList().forEach(player -> player.setBlackJack(false));
+            Dealer.getPlayerList().forEach(player -> player.setBusted(false));
+            Dealer.getPlayerList().forEach(player -> player.setScore(0));
+        } else {
+            setGameOver(true);
+        }
+    }
+
+    private void gameOver() {
+        System.out.println();
         try {
-            Files.lines(Path.of("resources", "banner1.txt")).forEach(System.out::println);
+            Files.lines(Path.of("resources", "gameover.txt")).forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        System.out.println("\n\n");
-    }
-
-    // TODO: make private after testing
-    private void getNumberOfPlayers() {
-        String number = prompter.prompt("Please select number of players [1-6]\n", "[1-6]", "\n" +
-                "Invalid number of players! Please select between 1 and 6 players");
-        setNumPlayers(Integer.parseInt(number));
-    }
-
-    private void getPlayerNames() {
-        int count = 0;
-        while (count < getNumPlayers()) {
-            String name = prompter.prompt("Player " + (count + 1) + ": Please enter your name\n");
-            Dealer.playerList.add(new Player(name));
-            count++;
         }
     }
 
