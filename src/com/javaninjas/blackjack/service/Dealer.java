@@ -29,6 +29,9 @@ public class Dealer extends Player {
         }
     }
 
+    /**
+     * Shuffles the deck
+     */
     private void shuffle() {
         Collections.shuffle(deck);
     }
@@ -57,10 +60,18 @@ public class Dealer extends Player {
         setScore(scoreHand());
     }
 
+    /**
+     * Deals the cards to the players
+     * @return return cards after removing top card in the deck.
+     */
     public Cards dealCard() {
         return deck.pop();
     }
 
+    /**
+     * Shows the player list for the game app
+     * @return Player list
+     */
     public static List<Player> getPlayerList() {
         return playerList;
     }
