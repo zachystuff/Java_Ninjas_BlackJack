@@ -51,6 +51,15 @@ public class Player {
         return name;
     }
 
+    public String printHand() {
+        String result = "";
+        for (Cards card:
+             hand) {
+            result += card.toString();
+        }
+        return result.replace(",", "").replace("[", "");
+    }
+
     public List<Cards> getHand() {
         return hand;
     }
