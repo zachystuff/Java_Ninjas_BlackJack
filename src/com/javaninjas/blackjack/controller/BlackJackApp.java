@@ -103,7 +103,7 @@ public class BlackJackApp {
 
     private void playerTurn() throws InterruptedException {
         for (Player player : Dealer.getPlayerList()) {
-            System.out.println(getDealer().getName() + " is showing " + getDealer().showTopCard() + "\n");
+            System.out.println(getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
             if (player.scoreHand() == 21) {
                 System.out.println(player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.getHand());
@@ -112,7 +112,7 @@ public class BlackJackApp {
             } else {
                 boolean flag = true;
                 while (flag) {
-                    System.out.println(player.getName() + " has " + player.getHand());
+                    System.out.println(player.getName() + " has \n" + player.printHand());
                     System.out.println(player.getName() + "'s current score is " + player.scoreHand());
                     String response = prompter.prompt("\nWould you like to [h]it or [s]tand?\n", "s|S|h|H", "\nInvalid " +
                             "option! Please press either (h) or (s)\n");
