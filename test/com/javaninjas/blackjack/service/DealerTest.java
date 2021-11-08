@@ -1,4 +1,11 @@
 package com.javaninjas.blackjack.service;
 
-class DealerTest {
+import org.junit.Test;
+
+public class DealerTest {
+
+    @Test
+    public void name() {
+
+    }
 }

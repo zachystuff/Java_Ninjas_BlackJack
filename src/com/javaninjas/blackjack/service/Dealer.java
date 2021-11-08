@@ -2,6 +2,10 @@ package com.javaninjas.blackjack.service;
 
 import java.util.*;
 
+/**
+ * Dealer class for BlackJack game and extends Player class. It consists of Player List which is public and static
+ * And deck of Cards
+ */
 public class Dealer extends Player {
     //Fields and Attributes
     public static List<Player> playerList = new ArrayList<>();
@@ -21,9 +25,7 @@ public class Dealer extends Player {
         shuffle();
         int round = 1;
         while (round <= 2) {
-            for (Player player : getPlayerList()) {
-                player.addCard(dealCard());
-            }
+            getPlayerList().forEach(player -> player.addCard(dealCard()));
             addCard(dealCard());
             round++;
         }
@@ -42,6 +44,7 @@ public class Dealer extends Player {
         this.deck = new LinkedList<>(cards);
     }
 
+    //Methods implements dealer to play
     public void dealerTurn() {
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\nAll players have Busted\n");
