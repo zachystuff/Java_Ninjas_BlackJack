@@ -22,15 +22,18 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 public class BlackJackApp {
+    //FIELDS
     private int numPlayers;
     private boolean gameOver = false;
     private final Dealer dealer = new Dealer();
-    private final Prompter prompter = new Prompter(new Scanner(System.in));
-    private final Introduction intro = new Introduction();
+    private static final Prompter prompter = new Prompter(new Scanner(System.in));
 
+
+    // N)-ARGUMENT CTOR
     public BlackJackApp() {
     }
 
+    // BUSINESS METHODS
     /**
      * Calls multiple methods in this class as well as other classes to guide client through a complete game of
      * BlackJack. After each round, client is prompted to {@link #playAgain() play again}. If client selects to play
@@ -49,7 +52,7 @@ public class BlackJackApp {
      * @see #gameOver() gameOver
      */
     public void execute() throws InterruptedException {
-        getIntro().introduction();
+        Introduction.introduction();
         Console.clear();
         welcome();
         getNumberOfPlayers();
@@ -67,7 +70,7 @@ public class BlackJackApp {
     }
 
     /**
-     * Retrieves an ascii art file and reads it into Stdout.
+     * Retrieves the welcome ascii art file and displays it.
      */
     private void welcome() {
         System.out.println("\n\n");
@@ -100,12 +103,14 @@ public class BlackJackApp {
         }
     }
 
-
+    /**
+     * Guides each player through their turn.
+     */
     private void playerTurn() throws InterruptedException {
         for (Player player : Dealer.getPlayerList()) {
-            if (player.scoreHand() == 21) {
+            if (player.scoreHand() == 21) {  // Checks if the player has blackjack
                 Console.clear();
-                blackJack();
+                blackJack();  // Prints ascii blackjack banner.
                 System.out.println("\n" + player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
@@ -114,55 +119,56 @@ public class BlackJackApp {
                 boolean flag = true;
                 while (flag) {
                     Console.clear();
+                    // Displays dealer and player hand, then prompts player to hit or stand.
                     System.out.println("\n\n" + getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
                     System.out.println(player.getName() + " has \n" + player.printHand());
                     System.out.println("\n" + player.getName() + "'s current score is " + player.scoreHand());
                     String response = prompter.prompt("\nWould you like to [h]it or [s]tand?\n", "s|S|h|H", "\nInvalid " +
                             "option! Please press either (h) or (s)\n");
-                    if ("h".equalsIgnoreCase(response)) {
+                    if ("h".equalsIgnoreCase(response)) {  // Player hits
                         player.addCard(getDealer().dealCard());
-                        if (player.scoreHand() > 21) {
+                        if (player.scoreHand() > 21) {  // Checks if player has busted.
                             Console.clear();
-                            busted();
+                            busted();  // Prints ascii busted banner.
                             System.out.println("\nYou have Busted! Your score is " + player.scoreHand());
                             System.out.println(player.printHand());
-                            player.setScore(player.scoreHand());
                             player.setBusted(true);
                             flag = false;
                             TimeUnit.SECONDS.sleep(4);
                         }
-                    } else {
-                        player.setScore(player.scoreHand());
+                    } else {  // Player stands
                         flag = false;
                     }
                 }
-            }
+            }player.setScore(player.scoreHand());
         }
     }
 
-
-
+    /**
+     * Calculates the final result of game and displays result to screen.
+     */
     private void finalResult() throws InterruptedException {
         Console.clear();
-        if (getDealer().isBusted()) {
-            congrats();
+        if (getDealer().isBusted()) {  // Checks if dealer busted.
+            congrats();  // Prints ascii Congratulations!!! banner.
             System.out.println("\n");
-            Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
+            Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).  // Filters out any player who busted.
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
-        } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            dealerWins();
+        } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) { // Checks if all players busted.
+            dealerWins();  // Prints ascii Dealer Wins banner
+            // Checks if dealer and any play has blackjack
         } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
             congrats();
-            Dealer.getPlayerList().stream().filter(Player::HasBlackJack)
+            Dealer.getPlayerList().stream().filter(Player::HasBlackJack) // Filters all players who have blackjack.
                     .forEach(player -> System.out.println(player.getName() + "Pushes"));
         } else {
-            Collection<Player> winners = Dealer.getPlayerList().stream()
+            Collection<Player> winners = Dealer.getPlayerList().stream()  // Collects all players who won.
                     .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
                     .collect(Collectors.toList());
-            Collection<Player> pushers = Dealer.getPlayerList().stream()
+            Collection<Player> pushers = Dealer.getPlayerList().stream()  // Collects all players who tied dealer.
                     .filter(player -> player.getScore() == getDealer().getScore())
                     .collect(Collectors.toList());
-            if (pushers.size() == 0 && winners.size() == 0) {
+            if (pushers.size() == 0 && winners.size() == 0) {  // checks if any plays won or tied dealer.
                 dealerWins();
             } else {
                 congrats();
@@ -174,7 +180,10 @@ public class BlackJackApp {
         TimeUnit.SECONDS.sleep(2);
     }
 
-
+    /**
+     *  Uses Prompter to prompt player to play again. If player selects yes, resets dealer, player, and deck for next
+     *  round. If player selects no, sets gameOver field to true.
+     */
     private void playAgain() {
         String replay = prompter.prompt("\n\n\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
                 "Invalid response");
@@ -193,6 +202,9 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Retrieves the game over ascii art file and displays it.
+     */
     private void gameOver() {
         Console.clear();
         System.out.println("\n\n");
@@ -203,6 +215,9 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Retrieves the dealer wins ascii art file and displays it.
+     */
     private void dealerWins(){
         System.out.println("\n\n");
         try {
@@ -212,6 +227,9 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Retrieves the congratulation ascii art file and displays it.
+     */
     private void congrats(){
         System.out.println("\n");
         try {
@@ -221,6 +239,9 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Retrieves the busted ascii art file and displays it.
+     */
     private void busted() {
         System.out.println("\n\n");
         try {
@@ -230,6 +251,9 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Retrieves the welcome ascii art file and displays it.
+     */
     private void blackJack() {
         System.out.println("\n\n");
         try {
@@ -238,7 +262,6 @@ public class BlackJackApp {
             e.printStackTrace();
         }
     }
-
 
     // ACCESSOR METHODS
     private boolean isGameOver() {
@@ -261,7 +284,4 @@ public class BlackJackApp {
         return dealer;
     }
 
-    public Introduction getIntro() {
-        return intro;
-    }
 }
