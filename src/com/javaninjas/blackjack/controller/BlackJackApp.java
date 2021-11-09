@@ -106,7 +106,7 @@ public class BlackJackApp {
             if (player.scoreHand() == 21) {
                 Console.clear();
                 blackJack();
-                System.out.println(player.getName() + " has BLACKJACK!!!!");
+                System.out.println("\n" + player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
                 TimeUnit.SECONDS.sleep(4);
@@ -114,7 +114,7 @@ public class BlackJackApp {
                 boolean flag = true;
                 while (flag) {
                     Console.clear();
-                    System.out.println("\n" + getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
+                    System.out.println("\n\n" + getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
                     System.out.println(player.getName() + " has \n" + player.printHand());
                     System.out.println("\n" + player.getName() + "'s current score is " + player.scoreHand());
                     String response = prompter.prompt("\nWould you like to [h]it or [s]tand?\n", "s|S|h|H", "\nInvalid " +
@@ -150,7 +150,6 @@ public class BlackJackApp {
             Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            System.out.println("\n");
             dealerWins();
         } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
             congrats();
@@ -177,7 +176,7 @@ public class BlackJackApp {
 
 
     private void playAgain() {
-        String replay = prompter.prompt("\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
+        String replay = prompter.prompt("\n\n\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
                 "Invalid response");
         if ("y".equalsIgnoreCase(replay)) {
             getDealer().getHand().clear();
@@ -196,7 +195,7 @@ public class BlackJackApp {
 
     private void gameOver() {
         Console.clear();
-        System.out.println();
+        System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "gameover.txt")).forEach(System.out::println);
         } catch (IOException e) {
@@ -205,6 +204,7 @@ public class BlackJackApp {
     }
 
     private void dealerWins(){
+        System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "Dealerwin.txt")).forEach(System.out::println);
         } catch (IOException e) {
@@ -213,6 +213,7 @@ public class BlackJackApp {
     }
 
     private void congrats(){
+        System.out.println("\n");
         try {
             Files.lines(Path.of("resources", "Congrats.txt")).forEach(System.out::println);
         } catch (IOException e) {
@@ -221,6 +222,7 @@ public class BlackJackApp {
     }
 
     private void busted() {
+        System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "Busted.txt")).forEach(System.out::println);
         } catch (IOException e) {
@@ -229,6 +231,7 @@ public class BlackJackApp {
     }
 
     private void blackJack() {
+        System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources","Blackjack.txt")).forEach(System.out::println);
         } catch (IOException e) {

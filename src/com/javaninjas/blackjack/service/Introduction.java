@@ -3,6 +3,9 @@ package com.javaninjas.blackjack.service;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -15,11 +18,12 @@ public class Introduction {
 
     public void introduction() throws InterruptedException {
         Console.clear();
-        System.out.println("\n \u001b[32m" + "GREETINGS PROFESSOR FALKEN.\n");
+        System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
         TimeUnit.SECONDS.sleep(3);
         String prompt = prompter.prompt("\nSHALL WE PLAY A GAME? [Y OR N]\n", "y|Y|n|N", "PLEASE SELECT Y OR N. ");
         if ("y".equalsIgnoreCase(prompt)) {
             Console.clear();
+            showWopr();
             showMenu();
             String game = prompter.prompt("\nPLEASE SELECT YOUR GAME [1-9]\n", "[1-9]", "INVALID SELECTION");
             switch (game) {
@@ -82,17 +86,26 @@ public class Introduction {
         }
     }
 
+    private void showWopr() {
+        System.out.println("\n\n");
+        try {
+            Files.lines(Path.of("resources", "wopr.txt")).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showMenu() {
         System.out.println("\nLOGON: LIST GAMES");
-        System.out.println("\n" +
-                "1. BLACKJACK\n" +
-                "2. FALKEN'S MAZE\n" +
-                "3. FIGHTER COMBAT\n" +
-                "4. GUERRILLA ENGAGEMENT\n" +
-                "5. DESERT WARFARE\n" +
-                "6. AIR-TO-GROUND ACTIONS\n" +
-                "7. THEATERWIDE TACTICAL WARFARE\n" +
-                "8. THEATERWIDE BIOTOXIC AND CHEMICAL WARFARE\n" +
-                "9. GLOBAL THERMONUCLEAR WAR");
+        System.out.println("\n\n" +
+                "1. BLACKJACK\n\n" +
+                "2. FALKEN'S MAZE\n\n" +
+                "3. FIGHTER COMBAT\n\n" +
+                "4. GUERRILLA ENGAGEMENT\n\n" +
+                "5. DESERT WARFARE\n\n" +
+                "6. AIR-TO-GROUND ACTIONS\n\n" +
+                "7. THEATERWIDE TACTICAL WARFARE\n\n" +
+                "8. THEATERWIDE BIOTOXIC AND CHEMICAL WARFARE\n\n" +
+                "9. GLOBAL THERMONUCLEAR WAR\n\n");
     }
 }
