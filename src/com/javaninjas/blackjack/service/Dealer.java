@@ -2,6 +2,7 @@ package com.javaninjas.blackjack.service;
 
 
 import com.apps.util.Console;
+import com.javaninjas.blackjack.controller.BlackJackApp;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -76,27 +77,27 @@ public class Dealer extends Player {
     public void dealerTurn() throws InterruptedException {
         Console.clear();
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            System.out.println("\nAll players have Busted\n");
-            TimeUnit.SECONDS.sleep(4);
+            System.out.println("\n\nAll players have Busted\n");
+            TimeUnit.SECONDS.sleep(2);
         } else if (scoreHand() == 21) {
-            System.out.println("\nDealer has BLACKJACK!\n" + printHand() + "\n");
-            TimeUnit.SECONDS.sleep(4);
+            System.out.println("\n\nDealer has BLACKJACK!\n" + printHand() + "\n");
+            TimeUnit.SECONDS.sleep(3);
         } else {
             while (scoreHand() < 17) {
                 Console.clear();
-                System.out.println(getName() + " has\n" + printHand());
+                System.out.println("\n\n" + getName() + " has\n" + printHand());
                 TimeUnit.SECONDS.sleep(2);
                 addCard(dealCard());
                 if (scoreHand() > 21) {
                     Console.clear();
-                    System.out.println("\nDealer Busts!\n");
+                    System.out.println("\n\nDealer Busts!");
                     System.out.println(printHand());
                     setBusted(true);
                     TimeUnit.SECONDS.sleep(2);
                 }
             }
             Console.clear();
-            System.out.println("\nDealer has a score of " + scoreHand());
+            System.out.println("\n\nDealer has a score of " + scoreHand());
             System.out.println(printHand());
         }
         setScore(scoreHand());
