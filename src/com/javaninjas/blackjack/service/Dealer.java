@@ -1,6 +1,8 @@
 package com.javaninjas.blackjack.service;
 
 
+import com.apps.util.Console;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -22,6 +25,7 @@ public class Dealer extends Player {
     //Fields and Attributes
     public static List<Player> playerList = new ArrayList<>();
     private LinkedList<Cards> deck;
+
     //Constructors
     public Dealer() {
         super("Dealer");
@@ -36,7 +40,7 @@ public class Dealer extends Player {
             e.printStackTrace();
         }
         String topCard = getHand().get(0).toString();
-        List<String> handDisplay = List.of(topCard,blankCard);
+        List<String> handDisplay = List.of(topCard, blankCard);
         List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))
                 .collect(Collectors.toList());
 
@@ -69,27 +73,39 @@ public class Dealer extends Player {
     }
 
     //Methods implements dealer to play
-    public void dealerTurn() {
+    public void dealerTurn() throws InterruptedException {
+        Console.clear();
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\nAll players have Busted\n");
+            TimeUnit.SECONDS.sleep(4);
         } else if (scoreHand() == 21) {
-            System.out.println("\nDealer has BLACKJACK! " + getHand() + "\n");
+            System.out.println("\nDealer has BLACKJACK!\n" + printHand() + "\n");
+            TimeUnit.SECONDS.sleep(4);
         } else {
             while (scoreHand() < 17) {
+                Console.clear();
+                System.out.println(getName() + " has\n" + printHand());
+                TimeUnit.SECONDS.sleep(2);
                 addCard(dealCard());
                 if (scoreHand() > 21) {
+                    Console.clear();
                     System.out.println("\nDealer Busts!\n");
+                    System.out.println(printHand());
                     setBusted(true);
+                    TimeUnit.SECONDS.sleep(2);
                 }
             }
+            Console.clear();
             System.out.println("\nDealer has a score of " + scoreHand());
             System.out.println(printHand());
         }
         setScore(scoreHand());
+        TimeUnit.SECONDS.sleep(4);
     }
 
     /**
      * Deals the cards to the players
+     *
      * @return return cards after removing top card in the deck.
      */
     public Cards dealCard() {
@@ -98,6 +114,7 @@ public class Dealer extends Player {
 
     /**
      * Shows the player list for the game app
+     *
      * @return Player list
      */
     public static List<Player> getPlayerList() {

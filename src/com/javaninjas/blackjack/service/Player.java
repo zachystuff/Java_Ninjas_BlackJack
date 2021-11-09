@@ -20,6 +20,7 @@ public class Player {
     private List<Cards> hand = new ArrayList<>();
     private boolean isBusted = false;
     private boolean hasBlackJack = false;
+
     //Constructors
     public Player(String name) {
         this.name = name;
@@ -37,10 +38,9 @@ public class Player {
             }
             score += card.getValue();
         }
-
         if (aces != 0) {
             for (int i = 0; i < aces; i++) {
-                if (getScore() + 11 < 21) {
+                if (score + 11 <= 21) {
                     score += 11;
                 } else {
                     score += 1;
