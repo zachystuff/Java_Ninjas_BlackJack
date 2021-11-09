@@ -29,7 +29,7 @@ public class BlackJackApp {
     private static final Prompter prompter = new Prompter(new Scanner(System.in));
 
 
-    // N)-ARGUMENT CTOR
+    // NO-ARGUMENT CTOR
     public BlackJackApp() {
     }
 
