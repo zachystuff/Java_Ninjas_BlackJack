@@ -105,6 +105,7 @@ public class BlackJackApp {
         for (Player player : Dealer.getPlayerList()) {
             if (player.scoreHand() == 21) {
                 Console.clear();
+                blackJack();
                 System.out.println(player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
@@ -122,6 +123,7 @@ public class BlackJackApp {
                         player.addCard(getDealer().dealCard());
                         if (player.scoreHand() > 21) {
                             Console.clear();
+                            busted();
                             System.out.println("\nYou have Busted! Your score is " + player.scoreHand());
                             System.out.println(player.printHand());
                             player.setScore(player.scoreHand());
@@ -138,14 +140,20 @@ public class BlackJackApp {
         }
     }
 
+
+
     private void finalResult() throws InterruptedException {
         Console.clear();
         if (getDealer().isBusted()) {
+            congrats();
+            System.out.println("\n");
             Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            System.out.println("\nDealer Wins!!!\n");
+            System.out.println("\n");
+            dealerWins();
         } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
+            congrats();
             Dealer.getPlayerList().stream().filter(Player::HasBlackJack)
                     .forEach(player -> System.out.println(player.getName() + "Pushes"));
         } else {
@@ -156,8 +164,9 @@ public class BlackJackApp {
                     .filter(player -> player.getScore() == getDealer().getScore())
                     .collect(Collectors.toList());
             if (pushers.size() == 0 && winners.size() == 0) {
-                System.out.println("\nDealer Wins!!!\n");
+                dealerWins();
             } else {
+                congrats();
                 System.out.println("\n");
                 winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
                 pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
@@ -194,6 +203,39 @@ public class BlackJackApp {
             e.printStackTrace();
         }
     }
+
+    private void dealerWins(){
+        try {
+            Files.lines(Path.of("resources", "Dealerwin.txt")).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void congrats(){
+        try {
+            Files.lines(Path.of("resources", "Congrats.txt")).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void busted() {
+        try {
+            Files.lines(Path.of("resources", "Busted.txt")).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void blackJack() {
+        try {
+            Files.lines(Path.of("resources","Blackjack.txt")).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // ACCESSOR METHODS
     private boolean isGameOver() {
