@@ -2,21 +2,29 @@ package com.javaninjas.blackjack.service;
 
 import com.apps.util.Console;
 import com.apps.util.Prompter;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Introduction Class for BlackJack game. A fun introduction screen based on the 80's movie "Wargames". Provides user
+ * input through a Prompter class written by Jay Rostosky.
+ *
+ * @author Alan Pottinger
+ * @version 1.0
+ */
 public class Introduction {
-    private Prompter prompter = new Prompter(new Scanner(System.in));
+    private static final Prompter prompter = new Prompter(new Scanner(System.in));
 
-    public Introduction() {
-
+    private Introduction(){
     }
-
-    public void introduction() throws InterruptedException {
+    /**
+     * "Wargames" style introduction for blackjack game. Uses a Prompter to prompt client if they would like to see menu
+     * or skip to blackjack game.
+     */
+    public static void introduction() throws InterruptedException {
         Console.clear();
         System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
         TimeUnit.SECONDS.sleep(3);
@@ -86,7 +94,10 @@ public class Introduction {
         }
     }
 
-    private void showWopr() {
+    /**
+     * Retrieves the wopr ascii art file and displays it.
+     */
+    private static void showWopr() {
         System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "wopr.txt")).forEach(System.out::println);
@@ -95,7 +106,10 @@ public class Introduction {
         }
     }
 
-    private void showMenu() {
+    /**
+     * Displays "Wargames" style menu.
+     */
+    private static void showMenu() {
         System.out.println("\nLOGON: LIST GAMES");
         System.out.println("\n\n" +
                 "1. BLACKJACK\n\n" +
