@@ -34,14 +34,8 @@ public class Dealer extends Player {
 
     //Start Dealing where all players and dealer get two cards initially
     public String showTopCard() {
-        String blankCard = null;
-        try {
-            blankCard = Files.readString(Path.of("resources", "Blank.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         String topCard = getHand().get(0).toString();
-        List<String> handDisplay = List.of(topCard, blankCard);
+        List<String> handDisplay = List.of(topCard, blankCard());
         List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))
                 .collect(Collectors.toList());
 
@@ -120,6 +114,16 @@ public class Dealer extends Player {
      */
     public static List<Player> getPlayerList() {
         return playerList;
+    }
+
+    private String blankCard() {
+        String blankCard = null;
+        try {
+            blankCard = Files.readString(Path.of("resources", "Blank.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return blankCard;
     }
 
     public LinkedList<Cards> getDeck() {
