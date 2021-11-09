@@ -103,27 +103,31 @@ public class BlackJackApp {
 
     private void playerTurn() throws InterruptedException {
         for (Player player : Dealer.getPlayerList()) {
-            System.out.println(getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
             if (player.scoreHand() == 21) {
+                Console.clear();
                 System.out.println(player.getName() + " has BLACKJACK!!!!");
-                System.out.println(player.getHand());
+                System.out.println(player.printHand());
                 player.setBlackJack(true);
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(4);
             } else {
                 boolean flag = true;
                 while (flag) {
+                    Console.clear();
+                    System.out.println("\n" + getDealer().getName() + " is showing \n" + getDealer().showTopCard() + "\n");
                     System.out.println(player.getName() + " has \n" + player.printHand());
-                    System.out.println(player.getName() + "'s current score is " + player.scoreHand());
+                    System.out.println("\n" + player.getName() + "'s current score is " + player.scoreHand());
                     String response = prompter.prompt("\nWould you like to [h]it or [s]tand?\n", "s|S|h|H", "\nInvalid " +
                             "option! Please press either (h) or (s)\n");
                     if ("h".equalsIgnoreCase(response)) {
                         player.addCard(getDealer().dealCard());
                         if (player.scoreHand() > 21) {
-                            System.out.println("\nYou have Busted! Your score is " + player.scoreHand() + "\n");
+                            Console.clear();
+                            System.out.println("\nYou have Busted! Your score is " + player.scoreHand());
+                            System.out.println(player.printHand());
                             player.setScore(player.scoreHand());
                             player.setBusted(true);
                             flag = false;
-                            TimeUnit.SECONDS.sleep(2);
+                            TimeUnit.SECONDS.sleep(4);
                         }
                     } else {
                         player.setScore(player.scoreHand());
@@ -134,7 +138,8 @@ public class BlackJackApp {
         }
     }
 
-    private void finalResult() {
+    private void finalResult() throws InterruptedException {
+        Console.clear();
         if (getDealer().isBusted()) {
             Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
@@ -153,10 +158,12 @@ public class BlackJackApp {
             if (pushers.size() == 0 && winners.size() == 0) {
                 System.out.println("\nDealer Wins!!!\n");
             } else {
+                System.out.println("\n");
                 winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
                 pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
             }
         }
+        TimeUnit.SECONDS.sleep(2);
     }
 
 
@@ -179,6 +186,7 @@ public class BlackJackApp {
     }
 
     private void gameOver() {
+        Console.clear();
         System.out.println();
         try {
             Files.lines(Path.of("resources", "gameover.txt")).forEach(System.out::println);
