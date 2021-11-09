@@ -15,7 +15,7 @@ public class Introduction {
 
     public void introduction() throws InterruptedException {
         Console.clear();
-        System.out.println("\nGREETINGS PROFESSOR FALKEN.\n");
+        System.out.println("\n \u001b[32m" + "GREETINGS PROFESSOR FALKEN.\n");
         TimeUnit.SECONDS.sleep(3);
         String prompt = prompter.prompt("\nSHALL WE PLAY A GAME? [Y OR N]\n", "y|Y|n|N", "PLEASE SELECT Y OR N. ");
         if ("y".equalsIgnoreCase(prompt)) {
