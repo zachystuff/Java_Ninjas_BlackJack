@@ -22,6 +22,11 @@ public class Player {
     private boolean hasBlackJack = false;
 
     //Constructors
+
+    /**
+     * Retrieves the welcome ascii art file and displays it.
+     * @param name
+     */
     public Player(String name) {
         this.name = name;
     }
@@ -64,7 +69,7 @@ public class Player {
 
     /**
      * Adds Cards to the players hand
-     * @return void
+     * @param card
      */
     public void addCard(Cards card) {
         hand.add(card);
@@ -88,7 +93,6 @@ public class Player {
 
     /**
      * Retrieves the players' current hand
-     * @return List<Cards>
      */
     public List<Cards> getHand() {
         return hand;

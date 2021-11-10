@@ -87,6 +87,7 @@ public enum Cards {
 
     /**
      * Return Value of Card
+     * @return int
      */
     public int getValue() {
         return value;

@@ -16,7 +16,10 @@ Non-GUI Blackjack game
 [JavaNinjas - Blackjack](https://github.com/zachystuff/Java_Ninjas_BlackJack)
 
 ### To start the game on the command line
->java -classpath blackjack-1.0.jar;"lib\*" com.javaninjas.blackjack.client.Main
+Download the Zip folder, and on command line run the following commands
+> For Windows - run.cmd
+> 
+> For Mac - run.sh
 
 ### Rules and/or high-level basic operation of the game or application:
 
