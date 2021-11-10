@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Player class for BlackJack game. This class provides scoreHand() method, returns boolean hasBlackJack or isBusted
  *
- * @author Subash KC, Zach Yusuf
+ * @author Subash KC, Abdulrazak Yusuf
  * @version 1.0
  */
 
