@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 /**
  * Player class for BlackJack game. This class provides scoreHand() method, returns boolean hasBlackJack or isBusted
  *
- * @author Subash KC
+ * @author Subash KC, Zach Yusuf
  * @version 1.0
  */
 
@@ -27,6 +27,10 @@ public class Player {
     }
 
     //Business Method
+    /**
+     * Main scoring method for blackjack app
+     *
+     */
     public int scoreHand() {
         // initialize aces to zero so we can do special scoring on aces
         int aces = 0;
@@ -57,7 +61,10 @@ public class Player {
     public String getName() {
         return name;
     }
-
+    /**
+     * Prints out the players current hand side by side
+     *
+     */
     public String printHand() {
         List<String> handDisplay = hand.stream().map(Cards::toString).collect(Collectors.toList());
         List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))

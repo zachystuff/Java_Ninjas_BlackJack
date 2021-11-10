@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Enum Class for BlackJack game. Provide visual representation and scoring for cards used during game.
+ * Enum Class for BlackJack game. Provide visual representation and score valuey for cards used during game.
  *
  * @author Abdulrazak Yusuf
  * @version 1.0
