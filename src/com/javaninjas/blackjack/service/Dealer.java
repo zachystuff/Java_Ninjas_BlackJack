@@ -1,9 +1,5 @@
 package com.javaninjas.blackjack.service;
 
-
-import com.apps.util.Console;
-import com.javaninjas.blackjack.controller.BlackJackApp;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,7 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
