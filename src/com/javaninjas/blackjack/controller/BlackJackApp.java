@@ -162,7 +162,7 @@ public class BlackJackApp {
     /**
      * Calculates the final result of game and displays result to screen.
      */
-     void finalResult() {
+    private void finalResult() {
         Console.clear();
         if (getDealer().isBusted()) {  // Checks if dealer busted.
             printBanner("congrats");  // Prints ascii Congratulations!!! banner.

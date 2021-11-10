@@ -17,17 +17,17 @@ public class BlackJackAppTest {
         app = new BlackJackApp();
     }
 
-    @Test
-    public void finalResult() {
-        app.getDealer().playerList.add(new Player("Alan"));
-        app.getDealer().playerList.get(0).addCard(Cards.CLUBS_ACE);
-        app.getDealer().playerList.get(0).addCard(Cards.CLUBS_JACK);
-        app.getDealer().playerList.get(0).scoreHand();
-        app.getDealer().playerList.get(0).setBlackJack(true);
-        app.getDealer().addCard(Cards.CLUBS_9);
-        app.getDealer().addCard(Cards.CLUBS_2);
-        app.getDealer().addCard(Cards.CLUBS_10);
-
-        app.finalResult();
-    }
+//    @Test
+//    public void finalResult() {
+//        app.getDealer().playerList.add(new Player("Alan"));
+//        app.getDealer().playerList.get(0).addCard(Cards.CLUBS_ACE);
+//        app.getDealer().playerList.get(0).addCard(Cards.CLUBS_JACK);
+//        app.getDealer().playerList.get(0).scoreHand();
+//        app.getDealer().playerList.get(0).setBlackJack(true);
+//        app.getDealer().addCard(Cards.CLUBS_9);
+//        app.getDealer().addCard(Cards.CLUBS_2);
+//        app.getDealer().addCard(Cards.CLUBS_10);
+//
+//        app.finalResult();
+//    }
 }
