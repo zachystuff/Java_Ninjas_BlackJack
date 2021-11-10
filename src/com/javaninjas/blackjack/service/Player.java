@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 public class Player {
     //Fields And Attributes
     private String name;
-    private double playerBalance;
     private int score = 0;
     private List<Cards> hand = new ArrayList<>();
     private boolean isBusted = false;
@@ -26,19 +25,11 @@ public class Player {
 
     /**
      * Requires a String name to create a player object
-     * @param name
+     * @param name player name
      */
     public Player(String name) {
         this.name = name;
     }
-    /**
-     * Class used to aggregate player action throughout the game
-     *
-     * @see #scoreHand() scoreHand
-     * @see #printHand() printHand
-     * @see #addCard(Cards) addCard
-     * @see #getHand() getHand
-     */
 
     //Business Method
     /**
@@ -70,7 +61,7 @@ public class Player {
 
     /**
      * Adds Cards to the players hand
-     * @param card
+     * @param card card Enum
      */
     public void addCard(Cards card) {
         hand.add(card);
@@ -117,7 +108,7 @@ public class Player {
         return isBusted;
     }
 
-    public boolean HasBlackJack() {
+    public boolean hasBlackJack() {
         return hasBlackJack;
     }
 
