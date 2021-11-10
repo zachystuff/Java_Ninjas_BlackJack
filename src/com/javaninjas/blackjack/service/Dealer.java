@@ -74,9 +74,6 @@ public class Dealer extends Player {
         this.deck = new LinkedList<>(cards);
     }
 
-    //Methods implements dealer to play
-
-
     /**
      * Deals the cards to the players
      *
