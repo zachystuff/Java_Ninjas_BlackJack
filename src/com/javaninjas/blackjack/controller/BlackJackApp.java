@@ -171,16 +171,16 @@ public class BlackJackApp {
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) { // Checks if all players busted.
             printBanner("dealerWins");  // Prints ascii Dealer Wins banner
             // Checks if dealer and any player has blackjack
-        } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
+        } else if (Dealer.getPlayerList().stream().anyMatch(Player::hasBlackJack) && getDealer().hasBlackJack()) {
             printBanner("congrats");
-            Dealer.getPlayerList().stream().filter(Player::HasBlackJack) // Filters all players who have blackjack.
+            Dealer.getPlayerList().stream().filter(Player::hasBlackJack) // Filters all players who have blackjack.
                     .forEach(player -> System.out.println(player.getName() + "PUSHES"));
         } else {
             Collection<Player> winners = Dealer.getPlayerList().stream()  // Collects all players who won.
-                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
+                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.hasBlackJack())
                     .collect(Collectors.toList());
             Collection<Player> pushers = Dealer.getPlayerList().stream()  // Collects all players who tied dealer.
-                    .filter(player -> player.getScore() == getDealer().getScore() && !player.HasBlackJack())
+                    .filter(player -> player.getScore() == getDealer().getScore() && !player.hasBlackJack())
                     .collect(Collectors.toList());
             if (pushers.size() == 0 && winners.size() == 0) {  // checks if any plays won or tied dealer.
                 printBanner("dealerWins");
@@ -281,7 +281,7 @@ public class BlackJackApp {
          * "Wargames" style introduction for blackjack game. Uses a Prompter to prompt client if they would like to see menu
          * or skip to blackjack game.
          */
-        public static void introduction() {
+        private static void introduction() {
             Console.clear();
             System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
             pause(3);
