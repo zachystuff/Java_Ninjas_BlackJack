@@ -51,11 +51,9 @@ public class BlackJackApp {
      */
     public void execute() {
         Introduction.introduction();
-        Console.clear();
         welcome();
         getNumberOfPlayers();
         getPlayerNames();
-        Console.clear();
         while (!isGameOver()) {
             getDealer().initialDeal();
             playerTurn();
@@ -71,6 +69,7 @@ public class BlackJackApp {
      * Retrieves the welcome ascii art file and displays it.
      */
     private void welcome() {
+        Console.clear();
         System.out.println("\n\n");
         try {
             Files.lines(Path.of("resources", "banner1.txt")).forEach(System.out::println);
@@ -149,6 +148,7 @@ public class BlackJackApp {
             pauseTwoSeconds();
         } else if (dealer.scoreHand() == 21) {
             System.out.println("\n\nDealer has BLACKJACK!\n" + dealer.printHand() + "\n");
+            dealer.setBlackJack(true);
             pauseThreeSeconds();
         } else {
             while (dealer.scoreHand() < 17) {
@@ -184,11 +184,11 @@ public class BlackJackApp {
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) { // Checks if all players busted.
             dealerWins();  // Prints ascii Dealer Wins banner
-            // Checks if dealer and any play has blackjack
+            // Checks if dealer and any player has blackjack
         } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
             congrats();
             Dealer.getPlayerList().stream().filter(Player::HasBlackJack) // Filters all players who have blackjack.
-                    .forEach(player -> System.out.println(player.getName() + "Pushes"));
+                    .forEach(player -> System.out.println(player.getName() + "PUSHES"));
         } else {
             Collection<Player> winners = Dealer.getPlayerList().stream()  // Collects all players who won.
                     .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
@@ -202,7 +202,7 @@ public class BlackJackApp {
                 congrats();
                 System.out.println("\n");
                 winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
-                pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
+                pushers.forEach(player -> System.out.println(player.getName() + " PUSHES"));
             }
         }
         pauseTwoSeconds();
