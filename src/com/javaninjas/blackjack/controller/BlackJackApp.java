@@ -5,7 +5,6 @@ import com.apps.util.Prompter;
 import com.javaninjas.blackjack.service.Dealer;
 import com.javaninjas.blackjack.service.Introduction;
 import com.javaninjas.blackjack.service.Player;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,7 +45,7 @@ public class BlackJackApp {
      * @see #getPlayerNames() getPlayerNames
      * @see Dealer#initialDeal() initialDeal
      * @see #playerTurn() playerTurn
-     * @see Dealer#dealerTurn() dealerTurn
+     * @see #dealerTurn() dealerTurn
      * @see #finalResult() finalResult
      * @see #playAgain() playAgain
      * @see #gameOver() gameOver
@@ -61,7 +60,7 @@ public class BlackJackApp {
         while (!isGameOver()) {
             getDealer().initialDeal();
             playerTurn();
-            getDealer().dealerTurn();
+            dealerTurn();
             finalResult();
             playAgain();
         }
@@ -144,6 +143,36 @@ public class BlackJackApp {
         }
     }
 
+    public void dealerTurn() throws InterruptedException {
+        Console.clear();
+        if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
+            System.out.println("\n\nAll players have Busted\n");
+            TimeUnit.SECONDS.sleep(2);
+        } else if (dealer.scoreHand() == 21) {
+            System.out.println("\n\nDealer has BLACKJACK!\n" + dealer.printHand() + "\n");
+            TimeUnit.SECONDS.sleep(3);
+        } else {
+            while (dealer.scoreHand() < 17) {
+                Console.clear();
+                System.out.println("\n\n" + dealer.getName() + " has\n" + dealer.printHand());
+                TimeUnit.SECONDS.sleep(2);
+                dealer.addCard(dealer.dealCard());
+                if (dealer.scoreHand() > 21) {
+                    Console.clear();
+                    System.out.println("\n\nDealer Busts!");
+                    System.out.println(dealer.printHand());
+                    dealer.setBusted(true);
+                    TimeUnit.SECONDS.sleep(2);
+                }
+            }
+            Console.clear();
+            System.out.println("\n\nDealer has a score of " + dealer.scoreHand());
+            System.out.println(dealer.printHand());
+        }
+        dealer.setScore(dealer.scoreHand());
+        TimeUnit.SECONDS.sleep(4);
+    }
+
     /**
      * Calculates the final result of game and displays result to screen.
      */
@@ -193,10 +222,9 @@ public class BlackJackApp {
             getDealer().setBusted(false);
             getDealer().setBlackJack(false);
             getDealer().setScore(0);
-            Dealer.getPlayerList().forEach(player -> player.getHand().clear());
-            Dealer.getPlayerList().forEach(player -> player.setBlackJack(false));
-            Dealer.getPlayerList().forEach(player -> player.setBusted(false));
-            Dealer.getPlayerList().forEach(player -> player.setScore(0));
+            Dealer.getPlayerList().stream().peek(player -> player.getHand().clear())
+                    .peek(player -> player.setBlackJack(false)).peek(player -> player.setBusted(false))
+                    .forEach(player -> player.setScore(0));
         } else {
             setGameOver(true);
         }

@@ -83,11 +83,13 @@ public class Player {
      * @return String
      */
     public String printHand() {
+        //creates a list of the toString() outputs from each card.
         List<String> handDisplay = hand.stream().map(Cards::toString).collect(Collectors.toList());
-        List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))
-                .collect(Collectors.toList());
-
-        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(String -> String.get(i)).collect(Collectors.joining()))
+        //splits each card into individual lines and stores each card in a list, then stores each List of card in a List.
+        List<List<String>> split = handDisplay.stream().map(str -> Stream.of(str.split("\\r\\n?|\\n"))
+                        .collect(Collectors.toList())).collect(Collectors.toList());
+        //joins each line of the cards together and returns a String of all the cards in the hand.
+        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(line -> line.get(i)).collect(Collectors.joining()))
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
