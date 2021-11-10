@@ -66,7 +66,7 @@ public class BlackJackApp {
     /**
      * Uses Prompter to prompt the client for the number of players. Range [1-6].
      */
-    void getNumberOfPlayers() {
+    private void getNumberOfPlayers() {
         String number = prompter.prompt("Please select number of players [1-6]\n", "[1-6]", "\n" +
                 "Invalid number of players! Please select between 1 and 6 players");
         setNumPlayers(Integer.parseInt(number));
@@ -128,7 +128,7 @@ public class BlackJackApp {
     /**
      * Automates dealer turn
      */
-    public void dealerTurn() {
+    private void dealerTurn() {
         Console.clear();
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\n\nAll players have Busted\n");
@@ -216,6 +216,7 @@ public class BlackJackApp {
         }
     }
 
+    //STATIC METHODS used by outer and inner class.
     /**
      * Retrieves the specified banner and displays it.
      * @param banner Name of .txt file to display.
