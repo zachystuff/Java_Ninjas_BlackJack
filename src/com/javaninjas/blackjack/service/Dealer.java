@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 
 /**
  * Dealer class for BlackJack game and extends Player class. It consists of Player List which is public and static
- * And deck of Cards
- * @author Subash KC
+  * And deck of Cards
+ * @author Subash KC, Abdulrazak Yusuf
  * version 1.0
  */
 public class Dealer extends Player {
