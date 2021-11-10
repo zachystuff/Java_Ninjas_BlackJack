@@ -42,10 +42,11 @@ public class Dealer extends Player {
         }
         String topCard = getHand().get(0).toString();
         List<String> handDisplay = List.of(topCard, blankCard);
-        List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))
-                .collect(Collectors.toList());
-
-        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(String -> String.get(i)).collect(Collectors.joining()))
+        //splits each card into individual lines and stores each card in a list, then stores each List of card in a List.
+        List<List<String>> split = handDisplay.stream().map(str -> Stream.of(str.split("\\r\\n?|\\n"))
+                .collect(Collectors.toList())).collect(Collectors.toList());
+        //joins each line of the cards together and returns a String of all the cards in the hand.
+        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(line -> line.get(i)).collect(Collectors.joining()))
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
@@ -74,35 +75,7 @@ public class Dealer extends Player {
     }
 
     //Methods implements dealer to play
-    public void dealerTurn() throws InterruptedException {
-        Console.clear();
-        if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
-            System.out.println("\n\nAll players have Busted\n");
-            TimeUnit.SECONDS.sleep(2);
-        } else if (scoreHand() == 21) {
-            System.out.println("\n\nDealer has BLACKJACK!\n" + printHand() + "\n");
-            TimeUnit.SECONDS.sleep(3);
-        } else {
-            while (scoreHand() < 17) {
-                Console.clear();
-                System.out.println("\n\n" + getName() + " has\n" + printHand());
-                TimeUnit.SECONDS.sleep(2);
-                addCard(dealCard());
-                if (scoreHand() > 21) {
-                    Console.clear();
-                    System.out.println("\n\nDealer Busts!");
-                    System.out.println(printHand());
-                    setBusted(true);
-                    TimeUnit.SECONDS.sleep(2);
-                }
-            }
-            Console.clear();
-            System.out.println("\n\nDealer has a score of " + scoreHand());
-            System.out.println(printHand());
-        }
-        setScore(scoreHand());
-        TimeUnit.SECONDS.sleep(4);
-    }
+
 
     /**
      * Deals the cards to the players
