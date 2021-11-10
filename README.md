@@ -12,7 +12,13 @@ Project Team
 
 Non-GUI Blackjack game
 
-## Rules and/or high-level basic operation of the game or application:
+### Project Location
+[JavaNinjas - Blackjack](https://github.com/zachystuff/Java_Ninjas_BlackJack)
+
+### To start the game on the command line
+>java -classpath blackjack-1.0.jar;"lib\*" com.javaninjas.blackjack.client.Main
+
+### Rules and/or high-level basic operation of the game or application:
 
 Card game between player(s) (1-6) and dealer to get closest to 21 without going over. Game uses a single deck of
 cards.  
