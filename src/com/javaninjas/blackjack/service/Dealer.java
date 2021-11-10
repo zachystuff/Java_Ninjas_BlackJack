@@ -29,7 +29,10 @@ public class Dealer extends Player {
         super("Dealer");
     }
 
-    //Start Dealing where all players and dealer get two cards initially
+    /**
+     * Displays the dealers top card and blank card
+     * @return String of both cards side by side
+     */
     public String showTopCard() {
         String blankCard = null;
         try {
@@ -47,6 +50,9 @@ public class Dealer extends Player {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
+    /**
+     * Start Dealing where all Players and Dealer get two cards initially
+     */
     public void initialDeal() {
         loadCards();
         shuffle();
@@ -65,6 +71,9 @@ public class Dealer extends Player {
         Collections.shuffle(deck);
     }
 
+    /**
+     * This method Loads all 52 cards in the deck
+     */
     private void loadCards() {
         //enum.value() returns enum constant as arrays
         Collection<Cards> cards = Arrays.asList(Cards.values());
@@ -80,11 +89,6 @@ public class Dealer extends Player {
         return deck.pop();
     }
 
-    /**
-     * Shows the player list for the game app
-     *
-     * @return Player list
-     */
     public static List<Player> getPlayerList() {
         return playerList;
     }
