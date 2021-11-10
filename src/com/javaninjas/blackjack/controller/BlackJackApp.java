@@ -39,7 +39,7 @@ public class BlackJackApp {
      * to play another round, the application will exit.
      *
      * @see Introduction#introduction() introduction
-     * @see #welcome() welcome
+     * @see #printBanner(String) printBanner
      * @see #getNumberOfPlayers() getNumberOfPlayers
      * @see #getPlayerNames() getPlayerNames
      * @see Dealer#initialDeal() initialDeal
@@ -47,11 +47,11 @@ public class BlackJackApp {
      * @see #dealerTurn() dealerTurn
      * @see #finalResult() finalResult
      * @see #playAgain() playAgain
-     * @see #gameOver() gameOver
+     *
      */
     public void execute() {
         Introduction.introduction();
-        welcome();
+        printBanner("welcome");
         getNumberOfPlayers();
         getPlayerNames();
         while (!isGameOver()) {
@@ -61,28 +61,12 @@ public class BlackJackApp {
             finalResult();
             playAgain();
         }
-        gameOver();
-
-    }
-
-    /**
-     * Retrieves the welcome ascii art file and displays it.
-     */
-    private void welcome() {
-        Console.clear();
-        System.out.println("\n\n");
-        try {
-            Files.lines(Path.of("resources", "banner1.txt")).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("\n\n");
     }
 
     /**
      * Uses Prompter to prompt the client for the number of players. Range [1-6].
      */
-    private void getNumberOfPlayers() {
+    void getNumberOfPlayers() {
         String number = prompter.prompt("Please select number of players [1-6]\n", "[1-6]", "\n" +
                 "Invalid number of players! Please select between 1 and 6 players");
         setNumPlayers(Integer.parseInt(number));
@@ -107,11 +91,11 @@ public class BlackJackApp {
         for (Player player : Dealer.getPlayerList()) {
             if (player.scoreHand() == 21) {  // Checks if the player has blackjack
                 Console.clear();
-                blackJack();  // Prints ascii blackjack banner.
+                printBanner("blackJack");  // Prints ascii blackjack banner.
                 System.out.println("\n" + player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
-                pauseFourSeconds();
+                pause(4);
             } else {
                 boolean flag = true;
                 while (flag) {
@@ -126,12 +110,12 @@ public class BlackJackApp {
                         player.addCard(getDealer().dealCard());
                         if (player.scoreHand() > 21) {  // Checks if player has busted.
                             Console.clear();
-                            busted();  // Prints ascii busted banner.
+                            printBanner("busted");  // Prints ascii busted banner.
                             System.out.println("\nYou have Busted! Your score is " + player.scoreHand());
                             System.out.println(player.printHand());
                             player.setBusted(true);
                             flag = false;
-                            pauseFourSeconds();
+                            pause(4);
                         }
                     } else {  // Player stands
                         flag = false;
@@ -141,27 +125,30 @@ public class BlackJackApp {
         }
     }
 
+    /**
+     * Automates dealer turn
+     */
     public void dealerTurn() {
         Console.clear();
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\n\nAll players have Busted\n");
-            pauseTwoSeconds();
+            pause(2);
         } else if (dealer.scoreHand() == 21) {
             System.out.println("\n\nDealer has BLACKJACK!\n" + dealer.printHand() + "\n");
             dealer.setBlackJack(true);
-            pauseThreeSeconds();
+            pause(3);
         } else {
             while (dealer.scoreHand() < 17) {
                 Console.clear();
                 System.out.println("\n\n" + dealer.getName() + " has\n" + dealer.printHand());
-                pauseTwoSeconds();
+                pause(2);
                 dealer.addCard(dealer.dealCard());
                 if (dealer.scoreHand() > 21) {
                     Console.clear();
                     System.out.println("\n\nDealer Busts!");
                     System.out.println(dealer.printHand());
                     dealer.setBusted(true);
-                    pauseTwoSeconds();
+                    pause(2);
                 }
             }
             Console.clear();
@@ -169,24 +156,23 @@ public class BlackJackApp {
             System.out.println(dealer.printHand());
         }
         dealer.setScore(dealer.scoreHand());
-        pauseFourSeconds();
+        pause(4);
     }
 
     /**
      * Calculates the final result of game and displays result to screen.
      */
-    private void finalResult() {
+     void finalResult() {
         Console.clear();
         if (getDealer().isBusted()) {  // Checks if dealer busted.
-            congrats();  // Prints ascii Congratulations!!! banner.
-            System.out.println("\n");
+            printBanner("congrats");  // Prints ascii Congratulations!!! banner.
             Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).  // Filters out any player who busted.
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) { // Checks if all players busted.
-            dealerWins();  // Prints ascii Dealer Wins banner
+            printBanner("dealerWins");  // Prints ascii Dealer Wins banner
             // Checks if dealer and any player has blackjack
         } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
-            congrats();
+            printBanner("congrats");
             Dealer.getPlayerList().stream().filter(Player::HasBlackJack) // Filters all players who have blackjack.
                     .forEach(player -> System.out.println(player.getName() + "PUSHES"));
         } else {
@@ -194,18 +180,18 @@ public class BlackJackApp {
                     .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
                     .collect(Collectors.toList());
             Collection<Player> pushers = Dealer.getPlayerList().stream()  // Collects all players who tied dealer.
-                    .filter(player -> player.getScore() == getDealer().getScore())
+                    .filter(player -> player.getScore() == getDealer().getScore() && !player.HasBlackJack())
                     .collect(Collectors.toList());
             if (pushers.size() == 0 && winners.size() == 0) {  // checks if any plays won or tied dealer.
-                dealerWins();
+                printBanner("dealerWins");
             } else {
-                congrats();
-                System.out.println("\n");
+                printBanner("congrats");
+                Console.blankLines(2);
                 winners.forEach(player -> System.out.println(player.getName() + " WINS!!!"));
                 pushers.forEach(player -> System.out.println(player.getName() + " PUSHES"));
             }
         }
-        pauseTwoSeconds();
+        pause(2);
     }
 
     /**
@@ -226,89 +212,32 @@ public class BlackJackApp {
                     .forEach(player -> player.setScore(0));
         } else {
             setGameOver(true);
+            printBanner("gameOver");
         }
     }
 
     /**
-     * Retrieves the game over ascii art file and displays it.
+     * Retrieves the specified banner and displays it.
+     * @param banner Name of .txt file to display.
      */
-    private void gameOver() {
+    private static void printBanner(String banner) {
         Console.clear();
-        System.out.println("\n\n");
+        Console.blankLines(2);
         try {
-            Files.lines(Path.of("resources", "gameover.txt")).forEach(System.out::println);
+            Files.lines(Path.of("resources", banner + ".txt")).forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Console.blankLines(2);
     }
 
     /**
-     * Retrieves the dealer wins ascii art file and displays it.
+     * Creates a pause in the game for the specified number of seconds.
+     * @param seconds Number of seconds to pause
      */
-    private void dealerWins(){
-        System.out.println("\n\n");
+    private static void pause(int seconds){
         try {
-            Files.lines(Path.of("resources", "Dealerwin.txt")).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Retrieves the congratulation ascii art file and displays it.
-     */
-    private void congrats(){
-        System.out.println("\n");
-        try {
-            Files.lines(Path.of("resources", "Congrats.txt")).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Retrieves the busted ascii art file and displays it.
-     */
-    private void busted() {
-        System.out.println("\n\n");
-        try {
-            Files.lines(Path.of("resources", "Busted.txt")).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Retrieves the welcome ascii art file and displays it.
-     */
-    private void blackJack() {
-        System.out.println("\n\n");
-        try {
-            Files.lines(Path.of("resources","Blackjack.txt")).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void pauseTwoSeconds(){
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void pauseThreeSeconds(){
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void pauseFourSeconds(){
-        try {
-            TimeUnit.SECONDS.sleep(4);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -335,6 +264,7 @@ public class BlackJackApp {
         return dealer;
     }
 
+    //STATIC INNER CLASS
     /**
      * Introduction Class for BlackJack game. A fun introduction screen based on the 80's movie "Wargames". Provides user
      * input through a Prompter class written by Jay Rostosky.
@@ -353,82 +283,69 @@ public class BlackJackApp {
         public static void introduction() {
             Console.clear();
             System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
-            pauseThreeSeconds();
+            pause(3);
             String prompt = prompter.prompt("\nSHALL WE PLAY A GAME? [Y OR N]\n", "y|Y|n|N", "PLEASE SELECT Y OR N. ");
             if ("y".equalsIgnoreCase(prompt)) {
                 Console.clear();
-                showWopr();
+                printBanner("wopr");
                 showMenu();
                 String game = prompter.prompt("\nPLEASE SELECT YOUR GAME [1-9]\n", "[1-9]", "INVALID SELECTION");
                 switch (game) {
                     case "1":
                         System.out.println("ENJOY YOUR GAME!");
-                        pauseThreeSeconds();
+                        pause(3);
                         break;
                     case "2":
                         System.out.println("ACCESS DENIED DUE TO COPYRIGHT INFRINGEMENT");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "3":
                         System.out.println("PEW PEW...EJECT! EJECT!...CRASH! THE END");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "4":
                         System.out.println("ISN'T THIS JUST HIDE AND SEEK WITH GUNS?");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "5":
                         System.out.println("SYSTEM ERROR: TOO MUCH SAND WHERE IT DOESN'T BELONG!");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "6":
                         System.out.println("THIS GAME HAS BEEN REPLACED WITH DRONES");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "7":
                         System.out.println("THIS GAME HAS BEEN DELETED DUE TO GRAPHIC CONTENT");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "8":
                         System.out.println("COUGH...COUGH...THE END");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                         break;
                     case "9":
                         System.out.println("EVERYONE IS DEAD...ARE YOU HAPPY NOW?");
-                        pauseThreeSeconds();
+                        pause(3);
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        pauseFourSeconds();
+                        pause(4);
                 }
             } else {
                 System.out.println("LOGGING OFF: W.O.P.R");
-                pauseFourSeconds();
-
-            }
-        }
-
-        /**
-         * Retrieves the wopr ascii art file and displays it.
-         */
-        private static void showWopr() {
-            System.out.println("\n\n");
-            try {
-                Files.lines(Path.of("resources", "wopr.txt")).forEach(System.out::println);
-            } catch (IOException e) {
-                e.printStackTrace();
+                pause(4);
             }
         }
 
@@ -436,7 +353,7 @@ public class BlackJackApp {
          * Displays "Wargames" style menu.
          */
         private static void showMenu() {
-            System.out.println("\nLOGON: LIST GAMES");
+            System.out.println("LOGON: LIST GAMES");
             System.out.println("\n\n" +
                     "1. BLACKJACK\n\n" +
                     "2. FALKEN'S MAZE\n\n" +
