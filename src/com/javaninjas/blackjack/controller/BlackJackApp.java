@@ -49,7 +49,7 @@ public class BlackJackApp {
      * @see #playAgain() playAgain
      * @see #gameOver() gameOver
      */
-    public void execute() throws InterruptedException {
+    public void execute() {
         Introduction.introduction();
         Console.clear();
         welcome();
@@ -104,7 +104,7 @@ public class BlackJackApp {
     /**
      * Guides each player through their turn.
      */
-    private void playerTurn() throws InterruptedException {
+    private void playerTurn() {
         for (Player player : Dealer.getPlayerList()) {
             if (player.scoreHand() == 21) {  // Checks if the player has blackjack
                 Console.clear();
@@ -112,7 +112,7 @@ public class BlackJackApp {
                 System.out.println("\n" + player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
-                TimeUnit.SECONDS.sleep(4);
+                pauseFourSeconds();
             } else {
                 boolean flag = true;
                 while (flag) {
@@ -132,7 +132,7 @@ public class BlackJackApp {
                             System.out.println(player.printHand());
                             player.setBusted(true);
                             flag = false;
-                            TimeUnit.SECONDS.sleep(4);
+                            pauseFourSeconds();
                         }
                     } else {  // Player stands
                         flag = false;
@@ -142,26 +142,26 @@ public class BlackJackApp {
         }
     }
 
-    public void dealerTurn() throws InterruptedException {
+    public void dealerTurn() {
         Console.clear();
         if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
             System.out.println("\n\nAll players have Busted\n");
-            TimeUnit.SECONDS.sleep(2);
+            pauseTwoSeconds();
         } else if (dealer.scoreHand() == 21) {
             System.out.println("\n\nDealer has BLACKJACK!\n" + dealer.printHand() + "\n");
-            TimeUnit.SECONDS.sleep(3);
+            pauseThreeSeconds();
         } else {
             while (dealer.scoreHand() < 17) {
                 Console.clear();
                 System.out.println("\n\n" + dealer.getName() + " has\n" + dealer.printHand());
-                TimeUnit.SECONDS.sleep(2);
+                pauseTwoSeconds();
                 dealer.addCard(dealer.dealCard());
                 if (dealer.scoreHand() > 21) {
                     Console.clear();
                     System.out.println("\n\nDealer Busts!");
                     System.out.println(dealer.printHand());
                     dealer.setBusted(true);
-                    TimeUnit.SECONDS.sleep(2);
+                    pauseTwoSeconds();
                 }
             }
             Console.clear();
@@ -169,13 +169,13 @@ public class BlackJackApp {
             System.out.println(dealer.printHand());
         }
         dealer.setScore(dealer.scoreHand());
-        TimeUnit.SECONDS.sleep(4);
+        pauseFourSeconds();
     }
 
     /**
      * Calculates the final result of game and displays result to screen.
      */
-    private void finalResult() throws InterruptedException {
+    private void finalResult() {
         Console.clear();
         if (getDealer().isBusted()) {  // Checks if dealer busted.
             congrats();  // Prints ascii Congratulations!!! banner.
@@ -205,7 +205,7 @@ public class BlackJackApp {
                 pushers.forEach(player -> System.out.println(player.getName() + " Pushes"));
             }
         }
-        TimeUnit.SECONDS.sleep(2);
+        pauseTwoSeconds();
     }
 
     /**
@@ -290,6 +290,30 @@ public class BlackJackApp {
         }
     }
 
+    private static void pauseTwoSeconds(){
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void pauseThreeSeconds(){
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void pauseFourSeconds(){
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     // ACCESSOR METHODS
     private boolean isGameOver() {
         return gameOver;
@@ -326,10 +350,10 @@ public class BlackJackApp {
          * "Wargames" style introduction for blackjack game. Uses a Prompter to prompt client if they would like to see menu
          * or skip to blackjack game.
          */
-        public static void introduction() throws InterruptedException {
+        public static void introduction() {
             Console.clear();
             System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
-            TimeUnit.SECONDS.sleep(3);
+            pauseThreeSeconds();
             String prompt = prompter.prompt("\nSHALL WE PLAY A GAME? [Y OR N]\n", "y|Y|n|N", "PLEASE SELECT Y OR N. ");
             if ("y".equalsIgnoreCase(prompt)) {
                 Console.clear();
@@ -339,59 +363,59 @@ public class BlackJackApp {
                 switch (game) {
                     case "1":
                         System.out.println("ENJOY YOUR GAME!");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         break;
                     case "2":
                         System.out.println("ACCESS DENIED DUE TO COPYRIGHT INFRINGEMENT");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "3":
                         System.out.println("PEW PEW...EJECT! EJECT!...CRASH! THE END");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "4":
                         System.out.println("ISN'T THIS JUST HIDE AND SEEK WITH GUNS?");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "5":
                         System.out.println("SYSTEM ERROR: TOO MUCH SAND WHERE IT DOESN'T BELONG!");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "6":
                         System.out.println("THIS GAME HAS BEEN REPLACED WITH DRONES");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "7":
                         System.out.println("THIS GAME HAS BEEN DELETED DUE TO GRAPHIC CONTENT");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "8":
                         System.out.println("COUGH...COUGH...THE END");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                         break;
                     case "9":
                         System.out.println("EVERYONE IS DEAD...ARE YOU HAPPY NOW?");
-                        TimeUnit.SECONDS.sleep(3);
+                        pauseThreeSeconds();
                         System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
-                        TimeUnit.SECONDS.sleep(4);
+                        pauseFourSeconds();
                 }
             } else {
                 System.out.println("LOGGING OFF: W.O.P.R");
-                TimeUnit.SECONDS.sleep(4);
+                pauseFourSeconds();
 
             }
         }
