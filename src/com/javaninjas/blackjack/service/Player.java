@@ -24,7 +24,7 @@ public class Player {
     //Constructors
 
     /**
-     * Retrieves the welcome ascii art file and displays it.
+     * Requires a String name to create a player object
      * @param name
      */
     public Player(String name) {
