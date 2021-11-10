@@ -7,9 +7,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * Player class for BlackJack game. This class provides scoreHand() method, returns boolean hasBlackJack or isBusted
+ * Player class for BlackJack game. This class provides scoreHand() method printHand() method, returns boolean hasBlackJack or isBusted
  *
- * @author Subash KC
+ * @author Subash KC, Abdulrazak Yusuf
  * @version 1.0
  */
 
@@ -22,11 +22,28 @@ public class Player {
     private boolean hasBlackJack = false;
 
     //Constructors
+
+    /**
+     * Requires a String name to create a player object
+     * @param name
+     */
     public Player(String name) {
         this.name = name;
     }
+    /**
+     * Class used to aggregate player action throughout the game
+     *
+     * @see #scoreHand() scoreHand
+     * @see #printHand() printHand
+     * @see #addCard(Cards) addCard
+     * @see #getHand() getHand
+     */
 
     //Business Method
+    /**
+     * Main scoring method for blackjack app
+     * @return int
+     */
     public int scoreHand() {
         // initialize aces to zero so we can do special scoring on aces
         int aces = 0;
@@ -50,6 +67,10 @@ public class Player {
         return score;
     }
 
+    /**
+     * Adds Cards to the players hand
+     * @param card
+     */
     public void addCard(Cards card) {
         hand.add(card);
     }
@@ -57,16 +78,24 @@ public class Player {
     public String getName() {
         return name;
     }
-
+    /**
+     * Prints out the players current hand side by side
+     * @return String
+     */
     public String printHand() {
+        //creates a list of the toString() outputs from each card.
         List<String> handDisplay = hand.stream().map(Cards::toString).collect(Collectors.toList());
-        List<List<String>> split = handDisplay.stream().map(x -> Stream.of(x.split("\\r\\n?|\\n")).collect(Collectors.toList()))
-                .collect(Collectors.toList());
-
-        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(String -> String.get(i)).collect(Collectors.joining()))
+        //splits each card into individual lines and stores each card in a list, then stores each List of card in a List.
+        List<List<String>> split = handDisplay.stream().map(str -> Stream.of(str.split("\\r\\n?|\\n"))
+                        .collect(Collectors.toList())).collect(Collectors.toList());
+        //joins each line of the cards together and returns a String of all the cards in the hand.
+        return IntStream.range(0, 6).mapToObj(i -> split.stream().map(line -> line.get(i)).collect(Collectors.joining()))
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
+    /**
+     * Retrieves the players' current hand
+     */
     public List<Cards> getHand() {
         return hand;
     }

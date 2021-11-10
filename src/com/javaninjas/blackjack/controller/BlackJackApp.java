@@ -3,9 +3,7 @@ package com.javaninjas.blackjack.controller;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
 import com.javaninjas.blackjack.service.Dealer;
-import com.javaninjas.blackjack.service.Introduction;
 import com.javaninjas.blackjack.service.Player;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,7 +44,7 @@ public class BlackJackApp {
      * @see #getPlayerNames() getPlayerNames
      * @see Dealer#initialDeal() initialDeal
      * @see #playerTurn() playerTurn
-     * @see Dealer#dealerTurn() dealerTurn
+     * @see #dealerTurn() dealerTurn
      * @see #finalResult() finalResult
      * @see #playAgain() playAgain
      * @see #gameOver() gameOver
@@ -61,7 +59,7 @@ public class BlackJackApp {
         while (!isGameOver()) {
             getDealer().initialDeal();
             playerTurn();
-            getDealer().dealerTurn();
+            dealerTurn();
             finalResult();
             playAgain();
         }
@@ -144,6 +142,36 @@ public class BlackJackApp {
         }
     }
 
+    public void dealerTurn() throws InterruptedException {
+        Console.clear();
+        if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) {
+            System.out.println("\n\nAll players have Busted\n");
+            TimeUnit.SECONDS.sleep(2);
+        } else if (dealer.scoreHand() == 21) {
+            System.out.println("\n\nDealer has BLACKJACK!\n" + dealer.printHand() + "\n");
+            TimeUnit.SECONDS.sleep(3);
+        } else {
+            while (dealer.scoreHand() < 17) {
+                Console.clear();
+                System.out.println("\n\n" + dealer.getName() + " has\n" + dealer.printHand());
+                TimeUnit.SECONDS.sleep(2);
+                dealer.addCard(dealer.dealCard());
+                if (dealer.scoreHand() > 21) {
+                    Console.clear();
+                    System.out.println("\n\nDealer Busts!");
+                    System.out.println(dealer.printHand());
+                    dealer.setBusted(true);
+                    TimeUnit.SECONDS.sleep(2);
+                }
+            }
+            Console.clear();
+            System.out.println("\n\nDealer has a score of " + dealer.scoreHand());
+            System.out.println(dealer.printHand());
+        }
+        dealer.setScore(dealer.scoreHand());
+        TimeUnit.SECONDS.sleep(4);
+    }
+
     /**
      * Calculates the final result of game and displays result to screen.
      */
@@ -193,10 +221,9 @@ public class BlackJackApp {
             getDealer().setBusted(false);
             getDealer().setBlackJack(false);
             getDealer().setScore(0);
-            Dealer.getPlayerList().forEach(player -> player.getHand().clear());
-            Dealer.getPlayerList().forEach(player -> player.setBlackJack(false));
-            Dealer.getPlayerList().forEach(player -> player.setBusted(false));
-            Dealer.getPlayerList().forEach(player -> player.setScore(0));
+            Dealer.getPlayerList().stream().peek(player -> player.getHand().clear())
+                    .peek(player -> player.setBlackJack(false)).peek(player -> player.setBusted(false))
+                    .forEach(player -> player.setScore(0));
         } else {
             setGameOver(true);
         }
@@ -284,4 +311,118 @@ public class BlackJackApp {
         return dealer;
     }
 
+    /**
+     * Introduction Class for BlackJack game. A fun introduction screen based on the 80's movie "Wargames". Provides user
+     * input through a Prompter class written by Jay Rostosky.
+     *
+     * @author Alan Pottinger
+     * @version 1.0
+     */
+    private static class Introduction {
+
+        private Introduction(){
+        }
+        /**
+         * "Wargames" style introduction for blackjack game. Uses a Prompter to prompt client if they would like to see menu
+         * or skip to blackjack game.
+         */
+        public static void introduction() throws InterruptedException {
+            Console.clear();
+            System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
+            TimeUnit.SECONDS.sleep(3);
+            String prompt = prompter.prompt("\nSHALL WE PLAY A GAME? [Y OR N]\n", "y|Y|n|N", "PLEASE SELECT Y OR N. ");
+            if ("y".equalsIgnoreCase(prompt)) {
+                Console.clear();
+                showWopr();
+                showMenu();
+                String game = prompter.prompt("\nPLEASE SELECT YOUR GAME [1-9]\n", "[1-9]", "INVALID SELECTION");
+                switch (game) {
+                    case "1":
+                        System.out.println("ENJOY YOUR GAME!");
+                        TimeUnit.SECONDS.sleep(3);
+                        break;
+                    case "2":
+                        System.out.println("ACCESS DENIED DUE TO COPYRIGHT INFRINGEMENT");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "3":
+                        System.out.println("PEW PEW...EJECT! EJECT!...CRASH! THE END");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "4":
+                        System.out.println("ISN'T THIS JUST HIDE AND SEEK WITH GUNS?");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "5":
+                        System.out.println("SYSTEM ERROR: TOO MUCH SAND WHERE IT DOESN'T BELONG!");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "6":
+                        System.out.println("THIS GAME HAS BEEN REPLACED WITH DRONES");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "7":
+                        System.out.println("THIS GAME HAS BEEN DELETED DUE TO GRAPHIC CONTENT");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "8":
+                        System.out.println("COUGH...COUGH...THE END");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                        break;
+                    case "9":
+                        System.out.println("EVERYONE IS DEAD...ARE YOU HAPPY NOW?");
+                        TimeUnit.SECONDS.sleep(3);
+                        System.out.println("WOULDN'T YOU PREFER A GOOD GAME OF BLACKJACK?");
+                        TimeUnit.SECONDS.sleep(4);
+                }
+            } else {
+                System.out.println("LOGGING OFF: W.O.P.R");
+                TimeUnit.SECONDS.sleep(4);
+
+            }
+        }
+
+        /**
+         * Retrieves the wopr ascii art file and displays it.
+         */
+        private static void showWopr() {
+            System.out.println("\n\n");
+            try {
+                Files.lines(Path.of("resources", "wopr.txt")).forEach(System.out::println);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * Displays "Wargames" style menu.
+         */
+        private static void showMenu() {
+            System.out.println("\nLOGON: LIST GAMES");
+            System.out.println("\n\n" +
+                    "1. BLACKJACK\n\n" +
+                    "2. FALKEN'S MAZE\n\n" +
+                    "3. FIGHTER COMBAT\n\n" +
+                    "4. GUERRILLA ENGAGEMENT\n\n" +
+                    "5. DESERT WARFARE\n\n" +
+                    "6. AIR-TO-GROUND ACTIONS\n\n" +
+                    "7. THEATERWIDE TACTICAL WARFARE\n\n" +
+                    "8. THEATERWIDE BIOTOXIC AND CHEMICAL WARFARE\n\n" +
+                    "9. GLOBAL THERMONUCLEAR WAR\n\n");
+        }
+    }
 }
