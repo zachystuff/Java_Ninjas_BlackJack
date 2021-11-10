@@ -19,7 +19,7 @@ Non-GUI Blackjack game
 Download the Zip folder, and on command line run the following commands
 > For Windows - run.cmd
 > 
-> For Mac - run.sh
+> For Mac - ./run.sh
 
 ### Rules and/or high-level basic operation of the game or application:
 
