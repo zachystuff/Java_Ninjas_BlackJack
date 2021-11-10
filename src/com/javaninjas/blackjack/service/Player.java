@@ -14,6 +14,7 @@ import java.util.stream.Stream;
  */
 
 public class Player {
+    //Fields And Attributes
     private String name;
     private double playerBalance;
     private int score = 0;
@@ -21,7 +22,7 @@ public class Player {
     private boolean isBusted = false;
     private boolean hasBlackJack = false;
 
-    //Constructors
+    //Constructors(Parameterized)
 
     /**
      * Requires a String name to create a player object
