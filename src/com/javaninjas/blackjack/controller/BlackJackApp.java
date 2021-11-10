@@ -74,6 +74,7 @@ public class BlackJackApp {
 
     /**
      * Uses Prompter to prompt the client for the player names.
+     * Adds player name to playerList in Dealer class.
      */
     private void getPlayerNames() {
         int count = 1;
@@ -91,7 +92,7 @@ public class BlackJackApp {
         for (Player player : Dealer.getPlayerList()) {
             if (player.scoreHand() == 21) {  // Checks if the player has blackjack
                 Console.clear();
-                printBanner("blackJack");  // Prints ascii blackjack banner.
+                printBanner("blackJack");  // Prints ASCII blackjack banner.
                 System.out.println("\n" + player.getName() + " has BLACKJACK!!!!");
                 System.out.println(player.printHand());
                 player.setBlackJack(true);
@@ -110,7 +111,7 @@ public class BlackJackApp {
                         player.addCard(getDealer().dealCard());
                         if (player.scoreHand() > 21) {  // Checks if player has busted.
                             Console.clear();
-                            printBanner("busted");  // Prints ascii busted banner.
+                            printBanner("busted");  // Prints ASCII busted banner.
                             System.out.println("\nYou have Busted! Your score is " + player.scoreHand());
                             System.out.println(player.printHand());
                             player.setBusted(true);
@@ -121,7 +122,8 @@ public class BlackJackApp {
                         flag = false;
                     }
                 }
-            }player.setScore(player.scoreHand());
+            }
+            player.setScore(player.scoreHand());
         }
     }
 
@@ -165,24 +167,24 @@ public class BlackJackApp {
     private void finalResult() {
         Console.clear();
         if (getDealer().isBusted()) {  // Checks if dealer busted.
-            printBanner("congrats");  // Prints ascii Congratulations!!! banner.
+            printBanner("congrats");  // Prints ASCII Congratulations!!! banner.
             Dealer.getPlayerList().stream().filter(player -> !player.isBusted()).  // Filters out any player who busted.
                     forEach(player -> System.out.println(player.getName() + " WINS!!!"));
         } else if (Dealer.getPlayerList().stream().allMatch(Player::isBusted)) { // Checks if all players busted.
-            printBanner("dealerWins");  // Prints ascii Dealer Wins banner
+            printBanner("dealerWins");  // Prints ASCII Dealer Wins banner
             // Checks if dealer and any player has blackjack
-        } else if (Dealer.getPlayerList().stream().anyMatch(Player::HasBlackJack) && getDealer().HasBlackJack()) {
+        } else if (Dealer.getPlayerList().stream().anyMatch(Player::hasBlackJack) && getDealer().hasBlackJack()) {
             printBanner("congrats");
-            Dealer.getPlayerList().stream().filter(Player::HasBlackJack) // Filters all players who have blackjack.
+            Dealer.getPlayerList().stream().filter(Player::hasBlackJack) // Filters all players who have blackjack.
                     .forEach(player -> System.out.println(player.getName() + "PUSHES"));
         } else {
             Collection<Player> winners = Dealer.getPlayerList().stream()  // Collects all players who won.
-                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.HasBlackJack())
+                    .filter(player -> player.getScore() > getDealer().getScore() && player.getScore() <= 21 || player.hasBlackJack())
                     .collect(Collectors.toList());
-            Collection<Player> pushers = Dealer.getPlayerList().stream()  // Collects all players who tied dealer.
-                    .filter(player -> player.getScore() == getDealer().getScore() && !player.HasBlackJack())
+            Collection<Player> pushers = Dealer.getPlayerList().stream()  // Collects all players who tied Dealer.
+                    .filter(player -> player.getScore() == getDealer().getScore() && !player.hasBlackJack())
                     .collect(Collectors.toList());
-            if (pushers.size() == 0 && winners.size() == 0) {  // checks if any plays won or tied dealer.
+            if (pushers.size() == 0 && winners.size() == 0) {  // checks if any players won or tied Dealer.
                 printBanner("dealerWins");
             } else {
                 printBanner("congrats");
@@ -195,8 +197,8 @@ public class BlackJackApp {
     }
 
     /**
-     *  Uses Prompter to prompt player to play again. If player selects yes, resets dealer, player, and deck for next
-     *  round. If player selects no, sets gameOver field to true.
+     *  Uses Prompter to prompt Player to play again. If Player selects yes, resets Dealer, Player, and deck for next
+     *  round. If Player selects no, sets gameOver field to true.
      */
     private void playAgain() {
         String replay = prompter.prompt("\n\n\nWould you like to play again? Select y or n.\n", "y|Y|n|N",
@@ -281,7 +283,7 @@ public class BlackJackApp {
          * "Wargames" style introduction for blackjack game. Uses a Prompter to prompt client if they would like to see menu
          * or skip to blackjack game.
          */
-        public static void introduction() {
+        private static void introduction() {
             Console.clear();
             System.out.println("\n \u001b[32m \n" + "GREETINGS PROFESSOR FALKEN.\n");
             pause(3);

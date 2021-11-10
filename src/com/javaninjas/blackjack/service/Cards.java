@@ -10,7 +10,6 @@ import java.nio.file.Path;
  * @author Abdulrazak Yusuf
  * @version 1.0
  */
-
 public enum Cards {
     SPADES_ACE("SPADES_ACE.txt", 0),
     SPADES_2("SPADES_2.txt", 2),

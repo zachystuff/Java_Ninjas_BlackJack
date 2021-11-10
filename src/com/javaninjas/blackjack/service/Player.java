@@ -12,37 +12,28 @@ import java.util.stream.Stream;
  * @author Subash KC, Abdulrazak Yusuf
  * @version 1.0
  */
-
 public class Player {
     //Fields And Attributes
     private String name;
-    private double playerBalance;
     private int score = 0;
     private List<Cards> hand = new ArrayList<>();
     private boolean isBusted = false;
     private boolean hasBlackJack = false;
 
     //Constructors(Parameterized)
-
     /**
      * Requires a String name to create a player object
-     * @param name
+     *
+     * @param name player name
      */
     public Player(String name) {
         this.name = name;
     }
-    /**
-     * Class used to aggregate player action throughout the game
-     *
-     * @see #scoreHand() scoreHand
-     * @see #printHand() printHand
-     * @see #addCard(Cards) addCard
-     * @see #getHand() getHand
-     */
 
     //Business Method
     /**
      * Main scoring method for blackjack app
+     *
      * @return int
      */
     public int scoreHand() {
@@ -70,17 +61,16 @@ public class Player {
 
     /**
      * Adds Cards to the players hand
-     * @param card
+     *
+     * @param card card Enum
      */
     public void addCard(Cards card) {
         hand.add(card);
     }
 
-    public String getName() {
-        return name;
-    }
     /**
      * Prints out the players current hand side by side
+     *
      * @return String
      */
     public String printHand() {
@@ -94,9 +84,6 @@ public class Player {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    /**
-     * Retrieves the players' current hand
-     */
     public List<Cards> getHand() {
         return hand;
     }
@@ -117,12 +104,16 @@ public class Player {
         return isBusted;
     }
 
-    public boolean HasBlackJack() {
+    public boolean hasBlackJack() {
         return hasBlackJack;
     }
 
     public void setBlackJack(boolean hasBlackJack) {
         this.hasBlackJack = hasBlackJack;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
