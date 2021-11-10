@@ -58,3 +58,5 @@ number.
 ### Get busted when you have a score of over 21
 ![Busted Screen](resources/busted.PNG)
 
+### Congrats! You won!
+![Congrats image](resources/Congrats.PNG)
