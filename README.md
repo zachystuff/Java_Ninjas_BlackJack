@@ -1,29 +1,34 @@
-# SDE_Mini_Project
+![Image of Game Banner](resources/blackjack_banner_img.PNG)
 
-SDE Mini Project Alan, Subash, Zach.
-
-# Black Jack
-
-practice project based on blackjack
+Console game based on Blackjack and War Games, 
 
 Project Team
 
-* Alan (owner)
-* Zach (collaborator)
-* Bob (collaborator)
+* Alan Pottinger
+* Zach Yusuf
+* Subash KC
 
 ## Project description:
 
 Non-GUI Blackjack game
 
-## Rules and/or high-level basic operation of the game or application:
+### Project Location
+[JavaNinjas - Blackjack](https://github.com/zachystuff/Java_Ninjas_BlackJack)
+
+### To start the game on the command line
+Download the Zip folder, and on command line run the following commands
+> For Windows - run.cmd
+> 
+> For Mac - run.sh
+
+### Rules and/or high-level basic operation of the game or application:
 
 Card game between player(s) (1-6) and dealer to get closest to 21 without going over. Game uses a single deck of
 cards.  
 A deck consists of 52 cards (13 cards of each suite). Face cards are worth 10, ace can be 1 or 11, numbers equal their
 number.
 
-### Game-flow
+### General Logic
 
 <ul> 
   <li> Select number of players and assign everyone a name.</li>
@@ -35,3 +40,21 @@ number.
   <li> Player hands are compared to dealer’s hand </li>
   <li> If higher than dealer, they win. If same as dealer, they push. If lower than dealer, they lose. </li>
 </ul>
+
+## Game-play & Screenshots
+
+### Theme inspired by War Games - a 1983 American Cold war science fiction techno thriller
+![Image of welcome screen](resources/Warzone_theme.PNG)
+
+### Begin the game by selecting the number of players
+![Image of player selection screen](resources/select_player.PNG)
+
+### Players have the option to hit or stand
+![Image of Gamplay](resources/gameplay.PNG)
+
+### Get Lucky
+![Image of Blackjack](resources/player_Blackjack.PNG)
+
+### Get busted when you have a score of over 21
+![Busted Screen](resources/busted.PNG)
+
