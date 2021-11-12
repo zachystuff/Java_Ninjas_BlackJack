@@ -261,7 +261,7 @@ public class BlackJackApp {
         return numPlayers;
     }
 
-    public Dealer getDealer() {
+    private Dealer getDealer() {
         return dealer;
     }
 
